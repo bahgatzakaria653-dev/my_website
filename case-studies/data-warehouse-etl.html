@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study: End-to-End Data Warehouse &amp; ETL Pipeline | Bahgat Zakaria</title>
+  <meta name="description" content="Case study on architecting an end-to-end Data Warehouse in SQL Server using Medallion Architecture (Bronze → Silver → Gold) and Star Schema dimensional modeling.">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+
+  <script src="../js/theme.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div>
+          <span>Bahgat Zakaria</span>
+          <span class="brand-role">Junior Data Engineer</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../index.html#projects" class="btn btn-outline btn-sm">
+          ← Back to Projects
+        </a>
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle Light/Dark Mode">
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--navbar-height) + 3rem); padding-bottom: 5rem;">
+    <article class="container-narrow">
+      
+      <!-- Top Navigation & Tag -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <span class="section-tag" style="margin-bottom: 0;">Case Study · Data Warehousing &amp; ETL</span>
+        <div style="display: flex; gap: 0.5rem;">
+          <a href="../index.html#projects" class="btn btn-outline btn-sm">
+            ← Projects
+          </a>
+          <a href="https://github.com/bahgatzakaria653-dev/sql_data_wharehouse_project" class="btn btn-primary btn-sm" target="_blank" rel="noopener noreferrer">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            GitHub Repo ↗
+          </a>
+        </div>
+      </div>
+
+      <h1 style="margin-bottom: 1rem;">End-to-End Data Warehouse &amp; ETL Pipeline</h1>
+      
+      <p class="lead" style="margin-bottom: 2.5rem; color: var(--text-secondary); font-size: 1.15rem; line-height: 1.7;">
+        A multi-layered data warehouse architecture implemented in SQL Server, transforming raw CRM and ERP data into an analytics-ready Star Schema using Medallion Architecture (Bronze → Silver → Gold).
+      </p>
+
+      <!-- 1. Project Overview -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Project Overview
+        </h3>
+        <p>
+          This project is an end-to-end Data Warehouse implemented in SQL Server. The primary objective is to transform raw operational data from CRM and ERP systems into structured, cleaned, and analytics-ready data using a Medallion Architecture (Bronze → Silver → Gold).
+        </p>
+        <p>
+          By separating concerns across progressive storage tiers, the architecture ensures data integrity, auditability, and optimal query performance for reporting and analytical consumption.
+        </p>
+      </section>
+
+      <!-- 2. Problem Statement -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Problem Statement
+        </h3>
+        <p>
+          Operational data originated from disparate CRM and ERP systems, presenting several structural and quality challenges that prevented effective business analytics:
+        </p>
+        <ul>
+          <li><strong>Scattered source data:</strong> Information was fragmented across multiple disconnected source files without a unified storage layer.</li>
+          <li><strong>Inconsistent records:</strong> Variations in customer codes, naming formats, and regional values between CRM and ERP extracts.</li>
+          <li><strong>Duplicate entries:</strong> Repeated transactional records caused by application retries that could skew reporting metrics.</li>
+          <li><strong>Inconsistent formats:</strong> Discrepant date representations, unstandardized categorical labels, and mismatched numeric types.</li>
+          <li><strong>Missing relationships between entities:</strong> Absence of foreign keys or direct mapping between sales orders and product/customer details.</li>
+          <li><strong>Raw structures not suitable for analytics:</strong> Operational transactional formats that were difficult, slow, and computationally inefficient to query directly.</li>
+        </ul>
+      </section>
+
+      <!-- 3. Data Sources & Integration -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Data Sources &amp; Integration
+        </h3>
+        <p>
+          <strong>CRM + ERP → Data Warehouse:</strong> The project integrates raw operational data from CRM and ERP source files into a centralized data warehouse pipeline.
+        </p>
+        <p>
+          The CRM system provides transactional sales records and customer account information, while the ERP system provides product catalog hierarchies, customer demographic details, and geographical mapping data. Integrating these sources establishes a single source of truth across all operations.
+        </p>
+        
+        <figure class="case-study-figure">
+          <img src="../assets/images/dwh-data-integration.png" alt="Data Integration: CRM and ERP Source Files to Data Warehouse" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Data Integration</div>
+            <div class="case-study-caption-desc">Integration of CRM and ERP source data into the data warehouse pipeline.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 4. Data Architecture -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Data Architecture
+        </h3>
+        <p>
+          The warehouse is structured around a three-tier Medallion Architecture in SQL Server, providing a clean separation between raw ingestion, standardized data, and analytical models:
+        </p>
+        <ul>
+          <li><strong>Bronze — Raw:</strong> Raw source data is loaded while preserving the original source structure and values as-is, ensuring a reliable audit trail.</li>
+          <li><strong>Silver — Cleaned &amp; Transformed:</strong> Data is cleaned, standardized, deduplicated, validated, and transformed using SQL/T-SQL and stored procedures.</li>
+          <li><strong>Gold — Analytics-Ready:</strong> Cleaned data is organized into Fact and Dimension tables using a Star Schema optimized for reporting and analytical queries.</li>
+        </ul>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/dwh-architecture-diagram.png" alt="Medallion Data Warehouse Architecture — Bronze, Silver, and Gold Layers" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Medallion Data Warehouse Architecture</div>
+            <div class="case-study-caption-desc">Bronze → Silver → Gold architecture showing the transformation of raw source data into an analytics-ready warehouse.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 5. Data Flow -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Data Flow
+        </h3>
+        <p>
+          Data moves sequentially through the pipeline following a transparent lineage from inception to analytical delivery:
+        </p>
+        <div class="workflow-pipeline" style="margin: 1.5rem 0;">
+          <div class="workflow-step"><span>CRM &amp; ERP Sources</span></div>
+          <span class="workflow-arrow">↓</span>
+          <div class="workflow-step"><span>Bronze Layer</span></div>
+          <span class="workflow-arrow">↓</span>
+          <div class="workflow-step"><span>Silver Layer</span></div>
+          <span class="workflow-arrow">↓</span>
+          <div class="workflow-step"><span>Gold Layer</span></div>
+          <span class="workflow-arrow">↓</span>
+          <div class="workflow-step"><span>Analytics-Ready Data</span></div>
+        </div>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/dwh-data-flow.png" alt="End-to-End Data Flow from Raw CRM/ERP Sources Through Bronze, Silver, and Gold" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">End-to-End Data Flow</div>
+            <div class="case-study-caption-desc">The movement of data from raw CRM and ERP sources through the Bronze, Silver, and Gold layers.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 6. ETL Process -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          ETL Process
+        </h3>
+        <p>
+          The ETL pipeline follows a disciplined four-stage workflow implemented directly in SQL Server:
+        </p>
+        <ul>
+          <li><strong>Extract:</strong> Collect raw CRM and ERP source data files from operational storage.</li>
+          <li><strong>Load (Bronze):</strong> Load the raw data into the Bronze layer tables with minimal overhead, maintaining source schema fidelity.</li>
+          <li><strong>Transform (Silver):</strong> Clean, standardize, validate, deduplicate, and transform the data using modular T-SQL stored procedures.</li>
+          <li><strong>Model (Gold):</strong> Build the Gold-layer dimensional model by populating Conformed Dimension tables and Fact tables with integer surrogate keys.</li>
+        </ul>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/dwh-etl-methods.png" alt="ETL and SQL Server Implementation Architecture" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">ETL &amp; SQL Server Implementation</div>
+            <div class="case-study-caption-desc">SQL Server ETL workflow and transformation logic used to process the source data.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 7. Data Quality & Transformation -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Data Quality &amp; Transformation
+        </h3>
+        <p>
+          Data transformations are performed systematically within the Silver layer to guarantee consistency, accuracy, and reliability before data enters the analytical layer:
+        </p>
+        <ul>
+          <li><strong>Data Cleansing:</strong> Trimming unwanted whitespaces, standardizing null representations, and removing corrupted strings.</li>
+          <li><strong>Data Standardization:</strong> Harmonizing inconsistent categorical codes (such as country names, gender flags, and product line codes).</li>
+          <li><strong>Deduplication:</strong> Identifying and eliminating duplicate transaction records using window functions (e.g., <code>ROW_NUMBER()</code> partitions).</li>
+          <li><strong>Data Type Conversion:</strong> Casting raw string representations into appropriate relational types (integers, decimals, and dates).</li>
+          <li><strong>Validation:</strong> Enforcing non-null constraints, logical date sequences, and valid numeric range checks.</li>
+          <li><strong>Referential Integrity:</strong> Ensuring foreign key relationships align consistently between customer, product, and sales entities.</li>
+          <li><strong>Stored Procedures:</strong> Encapsulating all ETL and cleaning steps in repeatable, modular T-SQL stored procedures with transaction management.</li>
+          <li><strong>SQL/T-SQL Transformations:</strong> Generating calculated business metrics, derived attributes, and standardized business flags.</li>
+        </ul>
+      </section>
+
+      <!-- 8. Data Modeling -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Data Modeling
+        </h3>
+        <p>
+          The Gold layer is organized into a Star Schema dimensional model specifically designed for fast, intuitive analytical querying:
+        </p>
+        <ul>
+          <li><strong>Fact Tables:</strong> Centralized table (<code>gold.fact_sales</code>) containing transactional measurements, order numbers, dates, quantities, unit prices, and calculated sales amounts.</li>
+          <li><strong>Dimension Tables:</strong> Conformed dimensions (<code>gold.dim_customers</code>, <code>gold.dim_products</code>) providing rich descriptive context for filtering, grouping, and slicing metrics.</li>
+          <li><strong>Relationships:</strong> One-to-many relationships connecting dimension primary keys to foreign keys within the central fact table.</li>
+          <li><strong>Surrogate Keys:</strong> Generated integer surrogate keys (<code>customer_key</code>, <code>product_key</code>) that decouple the data warehouse from changes in operational source keys.</li>
+          <li><strong>Star Schema:</strong> Simple, de-normalized structure that minimizes table joins and maximizes query efficiency.</li>
+          <li><strong>Analytical Reporting Structure:</strong> Prepared business-ready views enabling self-service ad-hoc SQL queries and BI reporting.</li>
+        </ul>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/dwh-star-schema-model.png" alt="Star Schema Dimensional Model: Fact Sales, Dim Customers, Dim Products" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Star Schema Dimensional Model</div>
+            <div class="case-study-caption-desc">Gold-layer dimensional model showing Fact and Dimension tables designed for analytical reporting.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 9. Technology Stack -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Technology Stack
+        </h3>
+        <p>
+          This project strictly utilizes the following core data engineering technologies:
+        </p>
+        <div class="project-tech-stack" style="margin: 1rem 0 0 0;">
+          <span class="tech-tag">SQL Server</span>
+          <span class="tech-tag">SQL / T-SQL</span>
+          <span class="tech-tag">Stored Procedures</span>
+          <span class="tech-tag">CSV source files</span>
+          <span class="tech-tag">ETL</span>
+          <span class="tech-tag">Medallion Architecture</span>
+          <span class="tech-tag">Data Warehousing</span>
+          <span class="tech-tag">Dimensional Modeling</span>
+          <span class="tech-tag">Star Schema</span>
+        </div>
+      </section>
+
+      <!-- 10. Engineering Approach -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Engineering Approach
+        </h3>
+        <p>
+          The architecture reflects several key engineering principles essential for scalable, dependable data systems:
+        </p>
+        <ul>
+          <li><strong>Layered Architecture:</strong> Strict progression from Bronze to Silver to Gold ensures data can always be audited back to source inputs.</li>
+          <li><strong>Data Transformation:</strong> Business logic and cleaning transformations are centralized within maintainable database stored procedures.</li>
+          <li><strong>Data Quality:</strong> Automated data validation assertions catch anomalies early in the pipeline before they affect reports.</li>
+          <li><strong>Structured Data Modeling:</strong> Standard dimensional modeling techniques guarantee straightforward query construction for non-technical stakeholders.</li>
+          <li><strong>Maintainability:</strong> Modular scripts and repeatable ETL patterns ensure the pipeline can be extended with new source files easily.</li>
+          <li><strong>Clear Separation:</strong> Strict boundaries between raw staging, sanitized data, and analytical views keep operational dependencies isolated.</li>
+        </ul>
+      </section>
+
+      <!-- 11. Project Outcome -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+          Project Outcome
+        </h3>
+        <p>
+          The project produces a structured and maintainable SQL Server Data Warehouse that transforms raw CRM and ERP data into cleaned, modeled, and analytics-ready data through a Bronze → Silver → Gold pipeline.
+        </p>
+      </section>
+
+      <!-- 12 & 13. GitHub CTA -->
+      <section class="case-study-section" style="padding: 2rem 0; border-top: 1px solid var(--border-color); text-align: center;">
+        <h3 style="justify-content: center; margin-bottom: 1rem;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          Explore the Source Code
+        </h3>
+        <p style="max-width: 600px; margin: 0 auto 1.5rem auto; color: var(--text-secondary);">
+          All DDL schema definitions, T-SQL ETL stored procedures, dimensional modeling queries, and documentation are available in the public GitHub repository.
+        </p>
+        <a href="https://github.com/bahgatzakaria653-dev/sql_data_wharehouse_project" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          View the Project on GitHub
+        </a>
+      </section>
+
+      <!-- Bottom Navigation Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 2rem; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <a href="../index.html#projects" class="btn btn-outline">
+          ← Back to All Projects
+        </a>
+        <a href="hospital-data-cleaning.html" class="btn btn-secondary">
+          View Hospital Cleaning Pipeline →
+        </a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p style="margin: 0 auto; font-size: 0.875rem;">&copy; 2026 Bahgat Zakaria · Junior Data Engineer</p>
+    </div>
+  </footer>
+</body>
+</html>

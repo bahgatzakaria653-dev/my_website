@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EAF3F7" />
+      <stop offset="100%" stop-color="#D8EBF3" />
+    </linearGradient>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#3B82A6" stroke-width="0.5" stroke-opacity="0.15"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="400" rx="16" fill="url(#bgGrad)"/>
+  <rect width="400" height="400" rx="16" fill="url(#grid)"/>
+  
+  <!-- Outer Technical Ring -->
+  <circle cx="200" cy="170" r="100" fill="none" stroke="#3B82A6" stroke-width="2" stroke-dasharray="6,6" opacity="0.4"/>
+  <circle cx="200" cy="170" r="90" fill="#FFFFFF" stroke="#3B82A6" stroke-width="2" opacity="0.9"/>
+  
+  <!-- Data Engineering Abstract Monogram / Avatar -->
+  <g fill="#285E75">
+    <!-- Stylized Head/Shoulders Silhouette with DE nodes -->
+    <path d="M200,125 C215,125 227,137 227,152 C227,167 215,179 200,179 C185,179 173,167 173,152 C173,137 185,125 200,125 Z" fill="#3B82A6"/>
+    <path d="M150,225 C150,195 172,188 200,188 C228,188 250,195 250,225 Z" fill="#285E75" opacity="0.85"/>
+  </g>
+
+  <!-- Data Flow Nodes -->
+  <circle cx="130" cy="140" r="7" fill="#3B82A6"/>
+  <line x1="130" y1="140" x2="165" y2="155" stroke="#3B82A6" stroke-width="2" opacity="0.6"/>
+  
+  <circle cx="270" cy="140" r="7" fill="#3B82A6"/>
+  <line x1="270" y1="140" x2="235" y2="155" stroke="#3B82A6" stroke-width="2" opacity="0.6"/>
+
+  <circle cx="200" cy="80" r="6" fill="#3B82A6"/>
+  <line x1="200" y1="80" x2="200" y2="115" stroke="#3B82A6" stroke-width="2" opacity="0.6"/>
+
+  <!-- Text Container -->
+  <rect x="40" y="295" width="320" height="75" rx="8" fill="#FFFFFF" stroke="#3B82A6" stroke-width="1.5" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.05))"/>
+  <text x="200" y="325" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="700" fill="#1E293B" text-anchor="middle">Bahgat Zakaria</text>
+  <text x="200" y="345" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="500" fill="#64748B" text-anchor="middle">Photo Slot: Replace with assets/images/profile.jpg</text>
+</svg>

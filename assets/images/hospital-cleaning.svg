@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="codeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" rx="12" fill="#0F172A"/>
+  
+  <!-- Terminal Header -->
+  <rect x="25" y="20" width="750" height="38" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <circle cx="45" cy="39" r="5" fill="#EF4444"/>
+  <circle cx="65" cy="39" r="5" fill="#F59E0B"/>
+  <circle cx="85" cy="39" r="5" fill="#10B981"/>
+  <text x="400" y="44" font-family="'JetBrains Mono', Consolas, monospace" font-size="12" fill="#94A3B8" text-anchor="middle">python_cleaning_pipeline.py — [Pandas Vectorized Transformation]</text>
+
+  <!-- Code Block Window -->
+  <rect x="25" y="68" width="750" height="355" rx="8" fill="url(#codeGrad)" stroke="#334155" stroke-width="1"/>
+
+  <!-- Code Line Numbers -->
+  <text x="50" y="105" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">01</text>
+  <text x="50" y="130" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">02</text>
+  <text x="50" y="155" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">03</text>
+  <text x="50" y="180" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">04</text>
+  <text x="50" y="205" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">05</text>
+  <text x="50" y="230" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">06</text>
+  <text x="50" y="255" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">07</text>
+  <text x="50" y="280" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">08</text>
+  <text x="50" y="305" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">09</text>
+  <text x="50" y="330" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">10</text>
+  <text x="50" y="355" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">11</text>
+
+  <!-- Code Content -->
+  <text x="80" y="105" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8"># 1. Normalize placeholders &amp; sanitize string representations</text>
+  
+  <text x="80" y="130" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#F43F5E">PLACEHOLDERS</tspan> <tspan fill="#F1F5F9">=</tspan> <tspan fill="#A5B4FC">['UNKNOWN', 'unknown', '???', '-', 'N/A', 'null']</tspan>
+  </text>
+  
+  <text x="80" y="155" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">.replace(</tspan><tspan fill="#F43F5E">PLACEHOLDERS</tspan><tspan fill="#F1F5F9">, np.nan, inplace=</tspan><tspan fill="#38BDF8">True</tspan><tspan fill="#F1F5F9">)</tspan>
+  </text>
+
+  <text x="80" y="180" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8"># 2. Vectorized ISO Date Conversion &amp; Logical Assertion</text>
+
+  <text x="80" y="205" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">['admission_date'] = pd.to_datetime(</tspan><tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">['admission_date'], errors='coerce')</tspan>
+  </text>
+
+  <text x="80" y="230" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">['discharge_date'] = pd.to_datetime(</tspan><tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">['discharge_date'], errors='coerce')</tspan>
+  </text>
+
+  <text x="80" y="255" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8"># 3. Email regex validation and phone standardization</text>
+
+  <text x="80" y="280" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">valid_email_mask</tspan> <tspan fill="#F1F5F9">=</tspan> <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">['email'].str.match(</tspan><tspan fill="#34D399">r'^[\w\.-]+@[\w\.-]+\.\w+$'</tspan><tspan fill="#F1F5F9">, na=</tspan><tspan fill="#38BDF8">False</tspan><tspan fill="#F1F5F9">)</tspan>
+  </text>
+
+  <text x="80" y="305" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">.loc[~</tspan><tspan fill="#5FA8C7">valid_email_mask</tspan><tspan fill="#F1F5F9">, 'email'] = np.nan</tspan>
+  </text>
+
+  <text x="80" y="330" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8"># 4. Deduplicate primary entities &amp; enforce positive billing amounts</text>
+
+  <text x="80" y="355" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#5FA8C7">df_clean</tspan> <tspan fill="#F1F5F9">=</tspan> <tspan fill="#5FA8C7">df</tspan><tspan fill="#F1F5F9">.drop_duplicates(subset=['patient_id']).query('age &gt;= 0 and age &lt;= 120')</tspan>
+  </text>
+
+  <!-- Bottom Banner -->
+  <rect x="40" y="380" width="720" height="28" rx="4" fill="#3B82A6" fill-opacity="0.2"/>
+  <text x="400" y="398" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#5FA8C7" text-anchor="middle">Screenshot Slot 2: Replace with your Cleaning / Transformation Code Screenshot</text>
+</svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="sqlDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="450" rx="12" fill="#0F172A"/>
+
+  <!-- SQL Server Management Studio Header -->
+  <rect x="25" y="20" width="750" height="38" rx="8" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <circle cx="45" cy="39" r="5" fill="#EF4444"/>
+  <circle cx="65" cy="39" r="5" fill="#F59E0B"/>
+  <circle cx="85" cy="39" r="5" fill="#10B981"/>
+  <text x="400" y="44" font-family="'JetBrains Mono', Consolas, monospace" font-size="12" fill="#94A3B8" text-anchor="middle">SQL Server — [usp_load_silver_to_gold.sql]</text>
+
+  <!-- Query Editor Canvas -->
+  <rect x="25" y="68" width="750" height="355" rx="8" fill="url(#sqlDark)" stroke="#334155" stroke-width="1"/>
+
+  <!-- Line Numbers -->
+  <text x="50" y="105" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">01</text>
+  <text x="50" y="130" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">02</text>
+  <text x="50" y="155" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">03</text>
+  <text x="50" y="180" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">04</text>
+  <text x="50" y="205" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">05</text>
+  <text x="50" y="230" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">06</text>
+  <text x="50" y="255" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">07</text>
+  <text x="50" y="280" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">08</text>
+  <text x="50" y="305" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">09</text>
+  <text x="50" y="330" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">10</text>
+  <text x="50" y="355" font-family="'JetBrains Mono', monospace" font-size="12" fill="#475569">11</text>
+
+  <!-- SQL Stored Procedure Code -->
+  <text x="80" y="105" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#38BDF8">CREATE OR ALTER PROCEDURE</tspan> <tspan fill="#F1F5F9">gold.usp_load_fact_sales</tspan>
+  </text>
+  <text x="80" y="130" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#38BDF8">AS BEGIN</tspan>
+  </text>
+  <text x="80" y="155" font-family="'JetBrains Mono', monospace" font-size="12" fill="#94A3B8">
+    &nbsp;&nbsp;-- Deduplicate transactions &amp; lookup surrogate keys
+  </text>
+  <text x="80" y="180" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">INSERT INTO</tspan> <tspan fill="#F1F5F9">gold.fact_sales (customer_key, product_key, order_date_key, total_amount)</tspan>
+  </text>
+  <text x="80" y="205" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">SELECT</tspan>
+  </text>
+  <text x="80" y="230" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;&nbsp;&nbsp;<tspan fill="#5FA8C7">c.customer_key</tspan><tspan fill="#F1F5F9">, </tspan><tspan fill="#5FA8C7">p.product_key</tspan><tspan fill="#F1F5F9">, </tspan><tspan fill="#5FA8C7">d.date_key</tspan><tspan fill="#F1F5F9">, </tspan><tspan fill="#5FA8C7">s.total_amount</tspan>
+  </text>
+  <text x="80" y="255" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">FROM</tspan> <tspan fill="#F1F5F9">silver.crm_sales_cleaned s</tspan>
+  </text>
+  <text x="80" y="280" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">INNER JOIN</tspan> <tspan fill="#F1F5F9">gold.dim_customer c </tspan><tspan fill="#38BDF8">ON</tspan> <tspan fill="#F1F5F9">s.customer_id = c.source_customer_id</tspan>
+  </text>
+  <text x="80" y="305" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">INNER JOIN</tspan> <tspan fill="#F1F5F9">gold.dim_product p </tspan><tspan fill="#38BDF8">ON</tspan> <tspan fill="#F1F5F9">s.product_id = p.source_product_id</tspan>
+  </text>
+  <text x="80" y="330" font-family="'JetBrains Mono', monospace" font-size="12">
+    &nbsp;&nbsp;<tspan fill="#38BDF8">INNER JOIN</tspan> <tspan fill="#F1F5F9">gold.dim_date d </tspan><tspan fill="#38BDF8">ON</tspan> <tspan fill="#F1F5F9">s.order_date = d.full_date;</tspan>
+  </text>
+  <text x="80" y="355" font-family="'JetBrains Mono', monospace" font-size="12">
+    <tspan fill="#38BDF8">END;</tspan>
+  </text>
+
+  <!-- Footer Notice -->
+  <rect x="40" y="380" width="720" height="28" rx="4" fill="#3B82A6" fill-opacity="0.2"/>
+  <text x="400" y="398" font-family="-apple-system, sans-serif" font-size="11" font-weight="600" fill="#5FA8C7" text-anchor="middle">Screenshot Slot 2: Replace with your SQL Server ETL Implementation Screenshot</text>
+</svg>

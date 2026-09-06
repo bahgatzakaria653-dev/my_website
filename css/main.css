@@ -1,0 +1,320 @@
+/* ==========================================================================
+   BAHGAT ZAKARIA — DATA ENGINEERING PORTFOLIO
+   Core Stylesheet (main.css)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties / Design Tokens (Light & Dark Theme)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Primary Dark Visual Foundation (Slate Gray Palette) */
+  --bg-primary: #12161C;
+  --bg-surface: #181F27;
+  --bg-surface-elevated: #202833;
+  --bg-surface-subtle: #151B22;
+  
+  /* Text Hierarchy (Off-White & Slate) */
+  --text-primary: #F8F9FA;
+  --text-secondary: #CBD5E1;
+  --text-muted: #8E9BAE;
+  
+  /* Soft Teal Accent */
+  --accent-primary: #45B0A8;
+  --accent-bright: #56C8BF;
+  --accent-dark: #2F8A83;
+  --accent-soft: rgba(69, 176, 168, 0.12);
+  --accent-soft-hover: rgba(69, 176, 168, 0.22);
+  --accent-glow: rgba(69, 176, 168, 0.25);
+
+  /* Pale Gold Secondary Accent (Used VERY Selectively) */
+  --accent-gold: #D4B483;
+  --accent-gold-light: #E5CBA2;
+  --accent-gold-soft: rgba(212, 180, 131, 0.12);
+  --accent-gold-border: rgba(212, 180, 131, 0.32);
+
+  /* Light Beige Neutral */
+  --neutral-beige: #F5F2EB;
+  --neutral-beige-soft: rgba(245, 242, 235, 0.05);
+  
+  /* Borders & Dividers */
+  --border-color: #26313E;
+  --border-subtle: #1C242E;
+  --border-focus: #45B0A8;
+
+  /* Status Indicators */
+  --status-available-bg: rgba(69, 176, 168, 0.14);
+  --status-available-text: #56C8BF;
+  --status-available-dot: #45B0A8;
+
+  /* Premium Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.28);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.38);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.48);
+  --shadow-hover: 0 18px 44px rgba(0, 0, 0, 0.60);
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.36), 0 0 0 1px var(--border-color);
+  --shadow-teal: 0 8px 28px rgba(69, 176, 168, 0.20);
+  --shadow-gold: 0 6px 20px rgba(212, 180, 131, 0.18);
+
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+
+  /* Layout & Sizing */
+  --max-width: 1200px;
+  --max-width-narrow: 880px;
+  --navbar-height: 74px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  --transition-base: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Light Mode Adaptation */
+[data-theme="light"] {
+  --bg-primary: #F8F6F1;
+  --bg-surface: #FFFFFF;
+  --bg-surface-elevated: #F1ECE3;
+  --bg-surface-subtle: #EFE9DE;
+  
+  --text-primary: #151A21;
+  --text-secondary: #475569;
+  --text-muted: #788698;
+  
+  --accent-primary: #288078;
+  --accent-bright: #206E67;
+  --accent-dark: #17544F;
+  --accent-soft: rgba(40, 128, 120, 0.10);
+  --accent-soft-hover: rgba(40, 128, 120, 0.16);
+  --accent-glow: rgba(40, 128, 120, 0.20);
+
+  --accent-gold: #9C783E;
+  --accent-gold-light: #B88E4A;
+  --accent-gold-soft: rgba(156, 120, 62, 0.10);
+  --accent-gold-border: rgba(156, 120, 62, 0.25);
+
+  --neutral-beige: #EDE7DC;
+  --neutral-beige-soft: rgba(237, 231, 220, 0.4);
+
+  --border-color: #E2DBD0;
+  --border-subtle: #EDE7DC;
+  --border-focus: #288078;
+
+  --status-available-bg: rgba(40, 128, 120, 0.12);
+  --status-available-text: #206E67;
+  --status-available-dot: #288078;
+
+  --shadow-sm: 0 1px 2px rgba(21, 26, 33, 0.05);
+  --shadow-md: 0 4px 12px rgba(21, 26, 33, 0.08);
+  --shadow-lg: 0 12px 28px rgba(21, 26, 33, 0.10);
+  --shadow-hover: 0 16px 36px rgba(21, 26, 33, 0.14);
+  --shadow-card: 0 4px 16px rgba(21, 26, 33, 0.06), 0 0 0 1px var(--border-color);
+  --shadow-teal: 0 6px 20px rgba(40, 128, 120, 0.14);
+  --shadow-gold: 0 4px 16px rgba(156, 120, 62, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Base Setup
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--navbar-height) + 24px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.65;
+  font-weight: 400;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-theme);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Accessibility Focus Ring */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   3. Typography
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2.25rem, 4.5vw, 3.25rem);
+  font-weight: 800;
+}
+
+h2 {
+  font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+}
+
+h4 {
+  font-size: 1.15rem;
+}
+
+p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  max-width: 68ch;
+}
+
+p.lead {
+  font-size: 1.125rem;
+  line-height: 1.7;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: var(--transition-base);
+}
+
+a:hover {
+  color: var(--accent-dark);
+}
+
+ul, ol {
+  list-style-position: inside;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+code, pre {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Layout Container & Section Framework
+   -------------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.container-narrow {
+  width: 100%;
+  max-width: var(--max-width-narrow);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+section {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 3.25rem;
+}
+
+.section-header.text-center {
+  text-align: center;
+}
+
+.section-header.text-center p {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-primary);
+  background-color: var(--accent-soft);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.section-title {
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+}
+
+/* Utility Helpers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 { gap: 0.5rem; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mt-8 { margin-top: 2rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+
+.text-center { text-align: center; }

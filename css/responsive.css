@@ -1,0 +1,378 @@
+/* ==========================================================================
+   BAHGAT ZAKARIA — DATA ENGINEERING PORTFOLIO
+   Portfolio V2 Responsive Stylesheet (responsive.css)
+   Flawless mobile centering, adaptive grids, and zero horizontal overflow.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Large Tablets & Small Laptops (<= 1024px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .hero-image-wrapper {
+    order: -1;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-avatar-frame {
+    width: 250px;
+    height: 250px;
+  }
+
+  .hero-content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-eyebrow {
+    margin: 0 auto 1.35rem auto;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-tech-pills {
+    align-items: center;
+  }
+
+  .hero-tech-list {
+    justify-content: center;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .project-card {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 2.25rem;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Tablets & Mobile Landscape (<= 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  section {
+    padding: 4rem 0;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu-btn {
+    display: inline-flex;
+  }
+
+  /* Hero Section: Perfectly Centered Container Alignment */
+  .hero-section {
+    padding-top: calc(var(--navbar-height) + 2rem);
+    padding-bottom: 3.5rem;
+    overflow-x: hidden;
+  }
+
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-image-wrapper {
+    order: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto 0.5rem auto;
+  }
+
+  .hero-avatar-showcase {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-avatar-frame {
+    width: 210px;
+    height: 210px;
+    margin: 0 auto;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-eyebrow {
+    margin: 0 auto 1.25rem auto;
+  }
+
+  .hero-title {
+    font-size: 2.2rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .hero-role {
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .hero-description {
+    font-size: 1.05rem;
+    text-align: center;
+    margin: 0 auto 2rem auto;
+    max-width: 48ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 auto;
+    min-width: 160px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hero-tech-pills {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .hero-tech-label {
+    text-align: center;
+  }
+
+  .hero-tech-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .education-credential-card {
+    flex-direction: column;
+    padding: 2rem 1.75rem;
+    gap: 1.5rem;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .training-card {
+    padding: 2rem 1.75rem;
+  }
+
+  .project-problem-solution {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.75rem;
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .modal-overlay {
+    padding: 0.75rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem 1rem;
+  }
+
+  .lightbox-dialog {
+    max-width: 96vw;
+    max-height: 94vh;
+  }
+
+  .lightbox-img {
+    max-width: 92vw;
+    max-height: 72vh;
+  }
+
+  .lightbox-close-btn {
+    top: -42px;
+    right: 4px;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Small Mobile Phones (<= 480px)
+   Verified on 320px, 375px, 390px, 414px, 430px — Zero Overflow
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .container {
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+  }
+
+  .hero-avatar-frame {
+    width: 175px;
+    height: 175px;
+  }
+
+  .hero-title {
+    font-size: 1.85rem;
+  }
+
+  .hero-role {
+    font-size: 1.1rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.65rem;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .about-narrative-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .project-card {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .project-title {
+    font-size: 1.3rem;
+  }
+
+  .project-thumbnails-row {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .skill-category-card {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .skills-badge-list {
+    gap: 0.5rem;
+  }
+
+  .skill-badge {
+    font-size: 0.8rem;
+    padding: 0.38rem 0.72rem;
+  }
+
+  .education-credential-card {
+    padding: 1.75rem 1.15rem;
+  }
+
+  .education-degree {
+    font-size: 1.2rem;
+  }
+
+  .training-card {
+    padding: 1.75rem 1.15rem;
+  }
+
+  .training-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .training-header-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .cert-card-content {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .contact-methods-bar {
+    gap: 0.65rem;
+    padding: 0.4rem 0.65rem;
+  }
+
+  .contact-form-panel {
+    padding: 1.5rem 1.15rem;
+  }
+
+  .lightbox-close-btn {
+    top: -38px;
+    right: 2px;
+    width: 32px;
+    height: 32px;
+  }
+}

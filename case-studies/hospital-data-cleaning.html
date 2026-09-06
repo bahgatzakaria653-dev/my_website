@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Study: Hospital Data Cleaning &amp; Data Quality Pipeline | Bahgat Zakaria</title>
+  <meta name="description" content="Case study on profiling, cleaning, standardizing, validating, and quarantining a 1,000,000-record hospital dataset using Python and Pandas.">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+
+  <script src="../js/theme.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="../index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+            <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+          </svg>
+        </div>
+        <div>
+          <span>Bahgat Zakaria</span>
+          <span class="brand-role">Junior Data Engineer</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <a href="../index.html#projects" class="btn btn-outline btn-sm">
+          ← Back to Projects
+        </a>
+        <button type="button" class="theme-toggle-btn" aria-label="Toggle Light/Dark Mode">
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main style="padding-top: calc(var(--navbar-height) + 3rem); padding-bottom: 5rem;">
+    <article class="container-narrow">
+      
+      <!-- Top Navigation & Tag -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <span class="section-tag" style="margin-bottom: 0;">Case Study · Data Cleaning &amp; Quality</span>
+        <a href="data-warehouse-etl.html" class="btn btn-outline btn-sm">
+          ← Data Warehouse Case Study
+        </a>
+      </div>
+
+      <h1 style="margin-bottom: 1rem;">Hospital Data Cleaning &amp; Data Quality Pipeline</h1>
+      
+      <p class="lead" style="margin-bottom: 2.5rem; color: var(--text-secondary); font-size: 1.15rem; line-height: 1.7;">
+        A Python and Pandas data cleaning and data quality pipeline for approximately 1,000,000 hospital records. The project focuses on profiling, cleaning, standardizing, validating, quarantining critical invalid records, and producing a clean output dataset.
+      </p>
+
+      <!-- Tech Stack -->
+      <div style="margin-bottom: 3rem; padding: 1.25rem; background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+        <strong style="display: block; margin-bottom: 0.5rem; font-size: 0.875rem; text-transform: uppercase; color: var(--text-muted);">Technologies:</strong>
+        <div class="project-tech-stack" style="margin-bottom: 0;">
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Pandas</span>
+          <span class="tech-tag">Data Cleaning</span>
+          <span class="tech-tag">Data Quality</span>
+          <span class="tech-tag">Data Validation</span>
+        </div>
+      </div>
+
+      <!-- 1. Project Overview -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          1. Project Overview
+        </h3>
+        <p>
+          This project processes a dataset of approximately <strong>1,000,000 records</strong> across <strong>17 columns</strong>. The goal is to transform raw, inconsistent hospital operational data into a cleaner, more consistent, and validated dataset through a disciplined data quality lifecycle:
+        </p>
+        <ul>
+          <li><strong>Data profiling:</strong> Inspecting structural integrity, data types, missing values, and anomalies.</li>
+          <li><strong>Data cleaning:</strong> Correcting malformed text, handling placeholder representations, and normalizing values.</li>
+          <li><strong>Standardization:</strong> Enforcing consistent formats across clinical and administrative attributes.</li>
+          <li><strong>Data validation:</strong> Applying rule-based assertions to detect remaining discrepancies.</li>
+          <li><strong>Data quarantine:</strong> Isolating critical invalid records with missing identifiers into a separate audit file.</li>
+          <li><strong>Clean output generation:</strong> Exporting a validated, structured dataset ready for reliable analysis.</li>
+        </ul>
+      </section>
+
+      <!-- 2. Data Quality Challenges -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          2. Data Quality Challenges
+        </h3>
+        <p>
+          Initial evaluation revealed multiple real-world data quality problems across the raw records:
+        </p>
+        <ul>
+          <li><strong>Missing values:</strong> Gaps across critical clinical, contact, and administrative columns.</li>
+          <li><strong>Duplicate records:</strong> Redundant patient rows resulting from system syncs and application retries.</li>
+          <li><strong>Invalid patient IDs:</strong> Malformed prefixes, incorrect character lengths, and corrupted identifier strings.</li>
+          <li><strong>Placeholder values:</strong> Widespread use of pseudo-null strings such as <code>"UNKNOWN"</code>, <code>"unknown"</code>, <code>"???"</code>, and <code>"-"</code> rather than standardized null representations.</li>
+          <li><strong>Invalid or out-of-range ages:</strong> Numeric anomalies including negative ages and values outside biological plausibility.</li>
+          <li><strong>Inconsistent categorical values:</strong> Variations in gender values, blood types, and department names.</li>
+          <li><strong>Invalid phone numbers:</strong> Mismatched character counts, non-numeric artifacts, and malformed area codes.</li>
+          <li><strong>Invalid email addresses:</strong> Missing domain names, syntax errors, and malformed strings.</li>
+          <li><strong>Inconsistent or invalid date values:</strong> Heterogeneous string date representations across columns.</li>
+          <li><strong>Future dates:</strong> Discharge dates recorded with timestamps ahead of the current calendar date.</li>
+          <li><strong>Discharge dates occurring before admission dates:</strong> Chronological order violations invalidating patient stay records.</li>
+        </ul>
+      </section>
+
+      <!-- 3. Data Profiling -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          3. Data Profiling
+        </h3>
+        <p>
+          Initial profiling was conducted to understand the dataset structure and systematically uncover data-quality issues prior to applying transformations.
+        </p>
+        <p>
+          The profiling workflow assessed:
+        </p>
+        <ul>
+          <li><strong>Dataset structure:</strong> Column counts, row volumes, and memory footprint.</li>
+          <li><strong>Data types:</strong> Identifying fields stored as general strings (object) that required conversion to dates or numeric types.</li>
+          <li><strong>Missing values:</strong> Calculating explicit null counts across each of the 17 attributes.</li>
+          <li><strong>Duplicate records:</strong> Verifying duplicate frequencies across complete rows.</li>
+          <li><strong>Unique values &amp; distributions:</strong> Assessing cardinality and identifying common invalid string patterns.</li>
+          <li><strong>Invalid formats:</strong> Scanning for disguised non-standard placeholder values.</li>
+        </ul>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/hospital-initial-profiling.png" alt="Initial Data Profiling Output Showing Dataset Structure and Null Counts" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Screenshot 1 — Initial Data Profiling</div>
+            <div class="case-study-caption-desc">Initial dataset profiling showing structure, data types, missing values, and duplicate records.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 4. Data Cleaning & Standardization -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          4. Data Cleaning &amp; Standardization
+        </h3>
+        <p>
+          Based on profiling observations, targeted data cleaning and standardization transformations were performed across the dataset:
+        </p>
+        <ul>
+          <li><strong>Removing unnecessary whitespace:</strong> Stripping leading and trailing spaces across all string columns to prevent false mismatches.</li>
+          <li><strong>Standardizing text values:</strong> Converting casing consistently across categorical and naming fields.</li>
+          <li><strong>Cleaning names:</strong> Sanitizing patient and doctor names by removing non-alphabetic noise characters and trailing artifacts.</li>
+          <li><strong>Converting numeric fields:</strong> Parsing numeric metrics (such as bill amounts) into appropriate numeric types for computation.</li>
+          <li><strong>Standardizing categorical values:</strong> Harmonizing variations in gender, blood type, and department designations.</li>
+          <li><strong>Converting placeholder values:</strong> Replacing disguised placeholders such as <code>"UNKNOWN"</code>, <code>"unknown"</code>, <code>"???"</code>, and <code>"-"</code> with standard missing values (NaN) where appropriate so they are recognized by analytical workflows.</li>
+          <li><strong>Validating and cleaning patient IDs:</strong> Checking conformity against expected hospital identifier formats and trimming stray prefixes.</li>
+          <li><strong>Cleaning phone numbers:</strong> Normalizing telephone strings and stripping non-numeric punctuation.</li>
+          <li><strong>Validating email addresses:</strong> Checking for valid email structures and flagging non-conforming entries.</li>
+          <li><strong>Parsing date fields:</strong> Converting admission and discharge strings into standardized date format.</li>
+          <li><strong>Identifying invalid or out-of-range values:</strong> Checking boundary conditions across age and billing attributes.</li>
+        </ul>
+      </section>
+
+      <!-- 5. Data Validation -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          5. Data Validation
+        </h3>
+        <p>
+          After cleaning routines were executed, explicit validation rules were applied to identify records that still violated expected business and data-quality rules.
+        </p>
+
+        <h4 style="margin-top: 1.5rem; color: var(--text-primary);">Patient ID Validation</h4>
+        <p>
+          Patient IDs were validated against the required hospital identifier pattern (<code>^PT\d{7}$</code>). Records failing the pattern match were quantified and categorized to distinguish true missing identifiers from corrupted text strings.
+        </p>
+        <p>
+          The validation execution identified <strong>5,398 invalid patient IDs</strong>, comprising missing values (4,190 NaN) and placeholder values such as <code>"???"</code> (313), <code>"UNKNOWN"</code> (311), <code>"unknown"</code> (309), and <code>"-"</code> (275).
+        </p>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/hospital-patient-id-validation.png" alt="Patient ID Validation Code and Output Showing 5398 Invalid IDs" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Screenshot 2 — Patient ID Validation</div>
+            <div class="case-study-caption-desc">Patient ID validation identifying missing and invalid identifier values.</div>
+          </figcaption>
+        </figure>
+
+        <h4 style="margin-top: 2rem; color: var(--text-primary);">Date Validation &amp; Chronological Integrity</h4>
+        <p>
+          Date validation was applied to verify temporal correctness. Two critical validation checks were enforced:
+        </p>
+        <ul>
+          <li><strong>Future discharge dates:</strong> Identified records where discharge dates extended beyond current calendar time, finding <strong>43,529 future discharge dates</strong>.</li>
+          <li><strong>Chronological consistency:</strong> Evaluated the business rule: <em>Discharge date cannot be before admission date</em>. The check uncovered <strong>2,457 records</strong> where patients had discharge dates preceding their recorded admission date.</li>
+        </ul>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/hospital-date-validation.png" alt="Date Validation Logic and Output Showing Future Discharge and Discharge Before Admission" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Screenshot 3 — Date Validation</div>
+            <div class="case-study-caption-desc">Date validation identifying future discharge dates and inconsistent admission/discharge date relationships.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 6. Data Quarantine & Clean Output -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          6. Data Quarantine &amp; Clean Output
+        </h3>
+        <p>
+          A central engineering practice demonstrated in this project is <strong>quarantining critical invalid records before exclusion</strong>. Rather than permanently discarding invalid records without documentation, rows with missing critical <code>patient_id</code> values were isolated into a dedicated quarantine file:
+        </p>
+        <p>
+          <strong><code>patient_id_null_rows.csv</code></strong>
+        </p>
+        <p>
+          This ensures full auditability, traceability, and investigation capability for clinical administration teams. Once the quarantined rows were isolated, valid records were compiled into the final clean dataset:
+        </p>
+        <p>
+          <strong><code>hospital_data_clean.csv</code></strong>
+        </p>
+
+        <figure class="case-study-figure">
+          <img src="../assets/images/hospital-quarantine-clean-output.png" alt="Data Quarantine Code Exporting patient_id_null_rows.csv and hospital_data_clean.csv" loading="lazy">
+          <figcaption class="case-study-caption">
+            <div class="case-study-caption-title">Screenshot 4 — Data Quarantine &amp; Clean Output</div>
+            <div class="case-study-caption-desc">Quarantining records with missing patient IDs before generating the clean output dataset.</div>
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- 7. Final Result -->
+      <section class="case-study-section" style="padding: 0 0 2.5rem 0;">
+        <h3>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
+          7. Final Result
+        </h3>
+        <p>
+          The project establishes a disciplined, reproducible data-quality workflow in Python and Pandas that:
+        </p>
+        <ul>
+          <li>Profiles raw data to reveal structural characteristics and anomaly patterns.</li>
+          <li>Identifies data-quality issues across identifiers, categories, contacts, and timestamps.</li>
+          <li>Cleans and standardizes values to enforce consistency across clinical records.</li>
+          <li>Applies rigorous validation rules to detect logical and chronological violations.</li>
+          <li>Separates critical invalid records for quarantine and historical auditing.</li>
+          <li>Produces a clean output dataset structured for reliable operational and analytical use.</li>
+        </ul>
+      </section>
+
+      <!-- Bottom Actions -->
+      <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-color); padding-top: 2rem; margin-top: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <a href="../index.html#projects" class="btn btn-outline">
+          ← Back to All Projects
+        </a>
+        <a href="data-warehouse-etl.html" class="btn btn-primary">
+          View Data Warehouse &amp; ETL Project →
+        </a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <p style="margin: 0 auto; font-size: 0.875rem;">&copy; 2026 Bahgat Zakaria · Junior Data Engineer</p>
+    </div>
+  </footer>
+</body>
+</html>
